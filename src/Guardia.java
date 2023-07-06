@@ -10,6 +10,9 @@ public class Guardia extends Persona{
     public Guardia(PuestoAerolinea puestoAerolinea, Tiempo tiempo){
         super(puestoAerolinea, tiempo);
     }
+    public Guardia(Tiempo tiempo){
+        super(tiempo);
+    }
 
     
 }

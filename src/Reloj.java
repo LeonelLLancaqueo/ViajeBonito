@@ -1,4 +1,7 @@
 public class Reloj extends Thread{
+
+        //Esta clase esta encargada de pasar el tiempo de la clase Tiempo
+        //Tambien es la encargada de manejar eventos del aeropuerto relacionados con el tiempo
     
     private Tiempo tiempo;
     private Aeropuerto aeropuerto;

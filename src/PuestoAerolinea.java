@@ -12,8 +12,7 @@ public class PuestoAerolinea {
     private Semaphore puesto, guardia;
     private TablaVueloAerolinea tablaVuelo;
 
-
-    private Tiempo tiempo;
+    private GuardiaSeguridad guardiaSeguridad;
      
     private LinkedBlockingQueue<Semaphore> colaEspera;
 
@@ -29,9 +28,12 @@ public class PuestoAerolinea {
         //SolicitarEntrar
         colaEspera= new LinkedBlockingQueue<Semaphore>();
 
-        this.tiempo= tiempo;
 
         puesto= new Semaphore(3, true);
+
+        //guardia seguridad
+        this.guardiaSeguridad= new GuardiaSeguridad(this, tiempo);
+        this.guardiaSeguridad.start();
 
 
         //despertar pasajero

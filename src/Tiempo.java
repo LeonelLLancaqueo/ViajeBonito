@@ -17,6 +17,16 @@ public class Tiempo {
         return tiempo;
     }
 
+    public synchronized boolean mayor(int otroTiempo){
+        return this.tiempo> otroTiempo; 
+    }
+    public synchronized boolean menor(int otroTiempo){
+        return this.tiempo < otroTiempo;
+    }
+    public synchronized boolean igual(int otroTiempo){
+        return this.tiempo == otroTiempo;
+    }
+
     public synchronized void nextHour(){
         this.tiempo++;
         if(this.tiempo > 24){

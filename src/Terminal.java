@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Terminal {
     private char id;
-    private int embarque[], siguienteEmbarque;
+    private int colIdEmbarque[], siguienteEmbarque;
     private Semaphore mutexSigEmb; 
-    private Embarque []colEmbarque;
+    
 
     //embarque general
     private Lock lockEmbarqueGeneral;
@@ -19,7 +19,7 @@ public class Terminal {
 
     private Tiempo tiempo;
 
-    private ConcurrentHashMap<Integer, Embarque> hashEmbarque;
+    private ConcurrentHashMap<Integer,Embarque> hashEmbarque;
 
     private FreeShop freeShop;
 
@@ -28,10 +28,11 @@ public class Terminal {
 
     public Terminal(char id, int []idEmbarque, Tiempo tiempo){
         this.id = id;
-        
-        this.hashEmbarque= new ConcurrentHashMap<Integer, Embarque>();
+        this.colIdEmbarque= idEmbarque;
+
+        this.hashEmbarque= new ConcurrentHashMap<Integer,Embarque>();
         //embarque;
-        this.colEmbarque= new Embarque[idEmbarque.length];
+
         
 
         this.siguienteEmbarque = 0;
@@ -72,7 +73,7 @@ public class Terminal {
     public Embarque esperarEmbarcar(Pasaje pasaje){
         try {
             lockEmbarqueGeneral.lock();
-            while(pasaje.getHoraSalida()-1 > tiempo.getTiempo()){
+            while(tiempo.mayor(pasaje.getHoraSalida()-1)){
                 esperarEmbarcar.await();
             }
         
@@ -85,18 +86,14 @@ public class Terminal {
         }finally {
             lockEmbarqueGeneral.unlock();
         }
-    
-        return hashEmbarque.get(pasaje.getIdPuestoEmbarque());
+        return this.hashEmbarque.get(pasaje.getIdPuestoEmbarque());
     }
 
     private void inicializarColEmbarqueYHash(int [] colIdEmbarque){
         //CREAMOS LOS EMBARQUES DE LA TERMINAL CON LOS ID PASADOS POR PARAMETROS
-        Embarque aux= null;
+        
         for(int i=0; i<colIdEmbarque.length; i++){
-            System.out.println(colIdEmbarque[i]);
-            aux = new Embarque(colIdEmbarque[i]);
-            colEmbarque[i] = aux;
-            hashEmbarque.put(colIdEmbarque[i], aux );
+            this.hashEmbarque.put(colIdEmbarque[i], new Embarque(colIdEmbarque[i]) );
         }
 
     }
@@ -112,14 +109,7 @@ public class Terminal {
     }
 
 
-    public int[] getEmbarque() {
-        return embarque;
-    }
 
-
-    public void setEmbarque(int[] embarque) {
-        this.embarque = embarque;
-    }
 
     public int getEmbarqueAleatorio() throws InterruptedException {
         //metodo que retorna el id de un embarque correspondiente a la terminal
@@ -127,21 +117,24 @@ public class Terminal {
 
         mutexSigEmb.acquire();
 
-        int aux= this.colEmbarque[this.siguienteEmbarque].getId();//obtenemos el id de un embarque
+        int aux= this.colIdEmbarque[this.siguienteEmbarque];//obtenemos el id de un embarque
         
 
         siguienteEmbarque++; //iterador  de la colEmbarque para que no sea siempre el mismo embarque
         
-        if(siguienteEmbarque > colEmbarque.length-1 ){
+        if(siguienteEmbarque > colIdEmbarque.length-1 ){
             this.siguienteEmbarque= 0; // si se sobrepasa la logitud de la colEmbarque el iterador vuelve  a 0
         }
-
+        //monitor 
         mutexSigEmb.release();
 
         return aux;
 
     }
 
+    public boolean equals(char idOtraTerminal){
+        return this.id == idOtraTerminal;
+    }
 
 }
 

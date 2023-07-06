@@ -26,6 +26,9 @@ abstract class Persona extends Thread{
         this.tiempo = tiempo;
 
     }
+    public Persona(Tiempo tiempo){
+        this.tiempo=tiempo;
+    }
 
     
     private int inicializarId(){

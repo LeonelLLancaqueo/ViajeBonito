@@ -1,3 +1,5 @@
+
+
 public class Embarque {
     private int id;
 
@@ -5,8 +7,10 @@ public class Embarque {
         this.id=id;
     }
 
-    public void embarcar(){
-        
+    public void embarcar()throws InterruptedException{
+        System.out.println("El pasajero esta embarcado");
+        Thread.sleep(1000);
+
     }
 
 

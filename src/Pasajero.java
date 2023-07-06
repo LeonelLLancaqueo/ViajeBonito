@@ -4,7 +4,9 @@ public class Pasajero extends Persona {
    
     private Pasaje pasaje;
     private Terminal terminal; // donde el pasajero
-
+    private Tren tren;
+    private Caja caja;
+    private Embarque embarque;
 
     public Pasajero(Aeropuerto aeropuerto, Tiempo tiempo) {
         super(aeropuerto, tiempo);
@@ -48,7 +50,8 @@ public class Pasajero extends Persona {
                 //  TREN
                 Thread.sleep(5000);
                 System.out.println("El pasajero "+id+" intenta subirse al tren");
-                aeropuerto.tomarTren();
+                this.tren= aeropuerto.entrarTren();
+                tren.tomarTren();
                 System.out.println("El pasajero "+id+" consiguio lugar en el tren");
             
             }
@@ -56,7 +59,7 @@ public class Pasajero extends Persona {
                 System.out.println(err.getMessage());
             }
 
-            terminal= aeropuerto.bajarTren(pasaje.getIdTerminal()); 
+            terminal= tren.bajarTren(pasaje.getIdTerminal()); 
             System.out.println("El pasajero "+id+" se bajo en la terminal "+ terminal.getId());
         
             //   TERMINAL
@@ -65,7 +68,7 @@ public class Pasajero extends Persona {
             System.out.println("El pasajero "+id+" Esta yendo al free Shop");
             FreeShop freeShop= terminal.irAFreeShop();
             boolean yaCompro= false;
-            while(pasaje.getHoraSalida() >=  tiempo.getTiempo()-3 && !yaCompro){ //PREGUNTAMO SI EL TIENE TIEMPO ANTES DE TENER QUE TOMAR SU VUELO O SI YA ENTRO Y COMPRO
+            while(!tiempo.menor(pasaje.getHoraSalida()+3) && !yaCompro){ //PREGUNTAMO SI EL TIENE TIEMPO ANTES DE TENER QUE TOMAR SU VUELO O SI YA ENTRO Y COMPRO
                     
                 if(freeShop.entrarYMirarProductos()){ //SI HAY LUGAR EN EL FREE SHOP
 
@@ -75,10 +78,13 @@ public class Pasajero extends Persona {
                     if(pasaje.getHoraSalida() >=  tiempo.getTiempo()-2){ //PREGUNTAMO SI EL TIENE TIEMPO ANTES DE TENER QUE TOMAR SU VUELO
 
                         System.out.println("El pasajero "+id+" decide comprar un producto y va hacia la caja");
-                        freeShop.comprarProducto();
+                        
+                        caja= freeShop.irACaja(); // el pasajero va a una caja
+                        
+                        caja.comprarProducto();
                         Thread.sleep(1000); //simulamos el tiempo
                         System.out.println("El pasajero "+id+" termino de comprar y libera la caja");
-                        freeShop.terminarDeComprar();
+                        caja.terminarDeComprar();
                         yaCompro= true;   
                     
                     }
@@ -91,9 +97,10 @@ public class Pasajero extends Persona {
             }
             Thread.sleep(2000);
             System.out.println("El pasajero "+id+" va a la sala de embarque general a esperar a embarcar");
-            Embarque embarque= terminal.esperarEmbarcar(pasaje);
+            embarque= terminal.esperarEmbarcar(pasaje);
 
-            System.out.println("El pasajero "+id+" es llamado para embarcar");
+            System.out.println("El pasajero "+id+" es llamado para embarcar en el embarque: " + pasaje.getIdPuestoEmbarque());
+            
             embarque.embarcar();
 
             System.out.println("El pasajero "+id+" termino de embarcar y tomo su vuelo");

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AeropuertoMain",
+            "request": "launch",
+            "mainClass": "AeropuertoMain",
+            "projectName": "ViajeBonito_cbbbe099"
+        },
+        {
+            "type": "java",
             "name": "Launch TestEstructuras",
             "request": "launch",
             "mainClass": "TestEstructuras",

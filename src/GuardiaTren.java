@@ -1,17 +1,28 @@
 public class GuardiaTren extends Guardia {
-    public GuardiaTren(Aeropuerto aeropuerto, Tiempo tiempo){
-        super(aeropuerto, tiempo);
+    
+    private Tren tren;
+    public GuardiaTren(Tiempo tiempo, Tren tren){
+        super(tiempo);
+        this.tren=tren;
     }
     
     public void run() {
 
         while(true){
             try {
+
+
                 
+
+
+                //considerar que el tren pueda salir sin que se haya llenado el tren
                 System.out.println("El guardia del tren espera para empezar el recorrido");
-                this.aeropuerto.empezarRecorrido();
+                Thread.sleep(3000);
+
                 
-                this.aeropuerto.terminarRecorrido();
+                this.tren.empezarRecorrido();
+                Thread.sleep(3000);
+                this.tren.terminarRecorrido();
                 System.out.println("El guardia del tren termina el recorrido del tren");
             }
             catch (Exception err) {

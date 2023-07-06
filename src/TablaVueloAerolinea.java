@@ -39,7 +39,7 @@ public class TablaVueloAerolinea {
             }
           
         } catch (InterruptedException e) {
-            System.out.println("interrupted exception");
+            System.out.println("interrupted exception en inicializar tabla vuelo");
         }
         
     }

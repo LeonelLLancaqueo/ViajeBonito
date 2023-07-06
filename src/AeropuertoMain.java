@@ -13,9 +13,9 @@ public class AeropuertoMain {
 
             Pasajero pasajeroTarde[]= new Pasajero[20]; 
 
-            //GuardiaAeropuerto guardiaAeropuerto= new GuardiaAeropuerto(aeropuerto, tiempo);
+            
 
-            GuardiaTren guardiaTren= new GuardiaTren(aeropuerto, tiempo);
+            
             
             for(int i=0; i<pasajero.length; i++) {
                 pasajero[i]=new Pasajero(aeropuerto, tiempo);
@@ -29,7 +29,7 @@ public class AeropuertoMain {
 
             reloj.start();
             //guardiaAeropuerto.start();
-            guardiaTren.start();
+            
             for(int i=0; i<pasajero.length; i++) {
                 pasajero[i].start();
             }
